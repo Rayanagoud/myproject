@@ -20,12 +20,24 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-dn(y3m!qz$q^2#7j0_rj08lujp4(-xzq##vdn65s&4nahzg@9%'
+# SECRET_KEY = 'django-insecure-dn(y3m!qz$q^2#7j0_rj08lujp4(-xzq##vdn65s&4nahzg@9%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
+
+
+
+
+# Security settings
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-dn(y3m!qz$q^2#7j0_rj08lujp4(-xzq##vdn65s&4nahzg@9%')
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = []
+RENDER_EXTERNAL_HOSTNAME = os.getenv('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+
 
 
 # Application definition
@@ -48,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'myproject.urls'
